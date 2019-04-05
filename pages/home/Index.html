@@ -1,0 +1,1320 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LT4生产大数据系统</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/_all-skins.min.css">
+    <link rel="stylesheet" href="../../css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../css/iconfont/iconfont.css">
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/infrastructure.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            min-height: 622px !important;
+            min-width: 1024px !important;
+            font-size: 20px;
+        }
+
+        .body {
+            width: 100%;
+            height: 100%;
+            background: url("../../img/bj.jpg") no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .head {
+            height: 10%;
+            background: url("../../img/head.png");
+            background-size: 100% 100%;
+            position: relative;
+            top: 20px;
+        }
+
+        .bottom {
+            height: 80%;
+            /*min-height: 750px;*/
+            /*min-width: 1200px;*/
+        }
+
+        .left {
+            width: 9%;
+            height: 100%;
+            float: left;
+        }
+
+        .iconfont {
+            font-family: "iconfont" !important;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: 0.2px;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .img {
+            height: 11%;
+            text-align: center;
+            cursor: pointer;
+            /*padding-top: 10px;*/
+        }
+
+            .img img {
+                width: 23%;
+            }
+
+            .img p {
+                color: white;
+                font-size: 14px;
+                padding-top: 5px;
+            }
+
+        .active {
+            background: url("../../img/bl.png");
+        }
+
+        .right {
+            background: url("../../img/kuang.png");
+            background-size: 100% 100%;
+            float: left;
+            height: 100%;
+            width: 90%;
+            margin-top: -2.5%;
+            margin-left: -0.5%;
+            display: flex;
+        }
+
+        .table th {
+            color: rgb(0,206,255);
+            font-size: 12px;
+            border-right: 1px solid rgb(0,206,255);
+            text-align: center;
+        }
+
+        .table td {
+            color: white;
+            font-size: 12px;
+            height: 25px;
+            border-right: 1px solid rgb(0,206,255);
+            text-align: center;
+        }
+
+        .right-l {
+            margin-left: 5px;
+            line-height: 1.2;
+        }
+
+        .r-img {
+            text-align: center;
+            position: relative;
+        }
+
+            .r-img img {
+                width: 80%;
+                max-width: 190px;
+            }
+
+        .a {
+            width: 100%;
+            height: 100%;
+        }
+
+            .a ul {
+                min-width: 80px;
+                width: 120px;
+            }
+
+            .a .menu, .a ul {
+                float: right;
+                position: absolute;
+                top: 25%;
+                right: 50px;
+            }
+
+        .lt {
+            background: url("../../img/lt4.png");
+            background-size: 100% 100%;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .p {
+            width: 50%;
+            position: absolute;
+            right: 2%;
+            top: 20%;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        p {
+            margin: 0 0 5px;
+        }
+
+        .p p:nth-child(1) {
+            font-weight: 800;
+            color: rgb(0,205,253);
+        }
+
+        .p p:nth-child(2) {
+            color: white;
+        }
+
+        .right-r {
+            background: url("../../img/right.png");
+            background-size: 90% 100%;
+            background-repeat: no-repeat;
+        }
+
+        tr td {
+            word-break: keep-all; /* 不换行 */
+            white-space: nowrap; /* 不换行 */
+            overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+        }
+
+        .right-r-b img {
+            height: 20%;
+        }
+
+        .span-s {
+            margin-top: 5px;
+        }
+
+            .span-s span {
+                color: white;
+            }
+
+        .eng {
+            display: none;
+            font-size: 16px;
+        }
+
+        .table table tbody tr td:nth-child(6), .table table thead tr th:nth-child(6) {
+            border: 0;
+        }
+
+        .text {
+            width: 90%;
+        }
+
+        .selectedbtn {
+            font-size: 16px;
+            color: white;
+            background-color: rgb(255,156,0);
+            border: 0;
+        }
+
+        .unselectedbtn {
+            font-size: 16px;
+            color: rgb(255,156,0);
+            background-color: transparent;
+            border: 0;
+        }
+
+        .colImg {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .colText {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .label-success {
+            background-color: transparent !important;
+            border: rgb(7,123,33) solid 2px !important;
+        }
+        .label-info {
+            background-color: transparent !important;
+            border: rgb(1,110,143) solid 2px !important;
+        }
+        .label-warning {
+            background-color: transparent !important;
+            border: rgb(123,79,25) solid 2px !important;
+        }
+        .text-out{
+            display:inline;
+        }
+        .right-m{
+            padding-top:5%;
+        }
+    </style>
+</head>
+<body>
+    <div class="body">
+        <div class="head">
+            <div class="headBody">
+                <img src="../../img/logo.png" alt="" style="width: 20%;float: left;position: absolute;
+        top: 15%;left: 20px">
+                <div class="a">
+                    <a href="#" class="menu">
+                        <span id="loginUser">Admin</span>
+                        <span><img src="../../img/dsj.png" alt="" style="width: 10px"></span>
+                    </a>
+                    <ul style="right: 0px;top: 50%;display: none;">
+                        <li><a href="#">中文</a></li>
+                        <li id="change"><a href="javascript:void(0)" onclick="change()">英文</a></li>
+                        <li><a href="#">德文</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">修改密码</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="lt chi" style="width: 33%;height:7%;position: relative;left: 36%;text-align: center;vertical-align: middle;font-size: 34px;font-weight: 400;color:rgb(0,254,251) ">
+            LT4 生产大数据系统
+        </div>
+        <div class="lt eng" style="width: 34%;height:7%;position: relative;left: 35.5%;text-align: center;vertical-align: middle;font-size: 34px;font-weight: 400;color:rgb(0,254,251);overflow: hidden;text-overflow: ellipsis ">
+            LT4 Production Big Data System
+        </div>
+        <div class="bottom">
+            <div class="left">
+                <div class="img">
+                    <img src="../../img/1.png" alt="">
+                    <p class="chi">系统配置</p>
+                    <p class="eng">System Configuration</p>
+                </div>
+                <div class="img">
+                    <img src="../../img/9.png" alt="">
+                    <p class="chi">柔性制造</p>
+                    <p class="eng">Flexible Manufacturing</p>
+                </div>
+                <div class="img">
+                    <img src="../../img/8.png" alt="">
+                    <p class="chi">实时监控</p>
+                    <p class="eng">Real-time Monitoring</p>
+                </div>
+                <div class="img">
+                    <img src="../../img/7.png" alt="">
+                    <p class="chi">统计分析</p>
+                    <p class="eng">Statistics Analysis</p>
+                </div>
+                <div class="img img0">
+                    <img src="../../img/6.png" alt="">
+                    <p class="chi">小组信息看板</p>
+                    <p class="eng">Group Information Board</p>
+                </div>
+                <div class="img img1">
+                    <img src="../../img/5.png" alt="">
+                    <p class="chi">流程控制板</p>
+                    <p class="eng">Process Control Board</p>
+                </div>
+                <div class="img img1">
+                    <img src="../../img/4.png" alt="">
+                    <p class="chi">保养和维修</p>
+                    <p class="eng">Maintenance and Repair</p>
+                </div>
+                <div class="img">
+                    <img src="../../img/3.png" alt="">
+                    <p class="chi">数据追溯</p>
+                    <p class="eng">Data Traceability</p>
+                </div>
+                <div class="img">
+                    <img src="../../img/2.png" alt="">
+                    <p class="chi">历史记录</p>
+                    <p class="eng">History Record</p>
+                </div>
+            </div>
+            <div class="right">
+                <div class="right-l" style="width: 24%;height: 100%">
+                    <div class="r-img">
+                        <img src="../../img/cx.png" alt="" style="opacity: 0.9">
+                        <div class="p chi">
+                            <p>当前机型</p>
+                            <p id="model_cuurent"></p>
+                        </div>
+                        <div class="p eng">
+                            <p>Current Model</p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="r-img">
+                        <img src="../../img/bc.png" alt="" style="opacity: 0.9">
+                        <div class="p chi">
+                            <p>当前班次</p>
+                            <p id="curWorkshift"></p>
+                        </div>
+                        <div class="p eng">
+                            <p>Current Shift</p>
+                            <p>Middle Shift</p>
+                        </div>
+                    </div>
+                    <div class="r-img">
+                        <img src="../../img/bz.png" alt="" style="opacity: 0.9">
+                        <div class="p chi">
+                            <p>当前班组</p>
+                            <p id="opclass"></p>
+                        </div>
+                        <div class="p eng">
+                            <p>Current Team</p>
+                            <p>A Team</p>
+                        </div>
+                    </div>
+                    <div class="r-img">
+                        <img src="../../img/cl.png" alt="" style="opacity: 0.9">
+                        <div class="p chi">
+                            <p>目标产量</p>
+                            <p id="planYield"></p>
+                        </div>
+                        <div class="p eng">
+                            <p>Target Output</p>
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="r-img">
+                        <img src="../../img/cl2.png" alt="" style="opacity: 0.9">
+                        <div class="p chi">
+                            <p>当前产量</p>
+                            <p id="yield_current"></p>
+                        </div>
+                        <div class="p eng">
+                            <p>Current Output</p>
+                            <p>10</p>
+                        </div>
+                    </div>
+                    <div class="r-img">
+                        <img src="../../img/oee.png" alt="" style="opacity: 0.9">
+                        <div class="p">
+                            <p>OEE</p>
+                            <p id="oee_current"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-m" style="width: 52%;height: 100%">
+                    <div style="width: 100%;height: 40%;">
+                        <div class=" text-out" style="width:98%">
+                                <h3 class="chi" style="color: rgb(255,156,0);display: inherit;">每小时产量</h3>
+                                <div class="output" style="float: right ">
+                                    <button class="selectedbtn" id="group0" onclick="showtypeChange(0)">&nbsp;&nbsp;近24小时&nbsp;&nbsp;</button>
+                                    <button class="unselectedbtn" id="group1" onclick="showtypeChange(1)">&nbsp;&nbsp;早班&nbsp;&nbsp;</button>
+                                    <button class="unselectedbtn" id="group2" onclick="showtypeChange(2)">&nbsp;&nbsp;中班&nbsp;&nbsp;</button>
+                                    <button class="unselectedbtn" id="group3" onclick="showtypeChange(3)">&nbsp;&nbsp;夜班&nbsp;&nbsp;</button>
+                                    <button class="unselectedbtn" id="group4">&nbsp;&nbsp;自选时间&nbsp;&nbsp;</button>
+                                </div>
+                                <h3 class="eng" style="color: rgb(255,156,0);">Hourly Output</h3>
+                        </div>
+                        <div class="chart" style="width: 100%;height: 100%;">
+                            <div id="salesChart" style="width: 100%;height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="width: 100%;height: 50%;">
+                        <div class="text text-plan" style="margin-top: 5%;">
+                            <h3 class="chi" style="color: rgb(255,156,0);">生产计划</h3>
+                            <h3 class="eng" style="color: rgb(255,156,0);">Production Plan</h3>
+                        </div>
+                        <div class="table chi">
+                            <table style="text-align: center;width: 100%;border-collapse: collapse">
+                                <thead>
+                                    <tr style="border:0">
+                                        <th>索引号</th>
+                                        <th>机型</th>
+                                        <th>计划数量</th>
+                                        <th>上线数量</th>
+                                        <th>状态</th>
+                                        <th>预计开始时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="schedule" style="border:0">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table eng">
+                            <table style="text-align: center;width: 100%;border-collapse: collapse">
+                                <thead>
+                                    <tr>
+                                        <th>Index Number</th>
+                                        <th>Model</th>
+                                        <th>Planned Quantity</th>
+                                        <th>Online Quantity</th>
+                                        <th>State</th>
+                                        <th>Estimated Start Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-r" style="width: 24%;height: 100%">
+                    <div class="right-r-t" style="margin-top: 25%">
+                        <div>
+                            <div id="chartParent" class="chart-responsive">
+                                <div id="pieChart" style="width:400px;height:220px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-r-m">
+                        <img src="../../img/rrm.png" alt="" style="width: 90%">
+                    </div>
+                    <div class="right-r-b">
+                        <div class="col-md-4 colImg" style="text-align: center;">
+                            <img src="../../img/sbgz.png" alt=""><img src="../../img/hxsh.png" alt=""><img src="../../img/zzsh.png" alt=""><img src="../../img/whqj.png" alt=""><img src="../../img/zlsh.png" alt="">
+                        </div>
+                        <div class="col-md-8 colText">
+                            <div class="span-s">
+                                <span class="info-box-text" style="color: #d2d6de">设备故障</span>
+                                <span class="info-box-number" id="losspct_1" style="color:#d2d6de"></span>
+                                <span class="progress-description">
+                                    损失时间
+                                    <span id="lossmin_1">3.2</span>分钟
+                                </span>
+                            </div>
+                            <div class="span-s">
+                                <span class="info-box-text" style="color: #3D9970">换型损失</span>
+                                <span class="info-box-number" id="losspct_2" style="color: #3D9970"></span>
+                                <span class="progress-description">
+                                    损失时间
+                                    <span id="lossmin_2">1.1</span>分钟
+                                </span>
+                            </div>
+                            <div class="span-s">
+                                <span class="info-box-text" style="color: #f39c12">组织损失</span>
+                                <span class="info-box-number" id="losspct_3" style="color:#f39c12 "></span>
+                                <span class="progress-description">
+                                    损失时间
+                                    <span id="lossmin_3">1.3</span>分钟
+                                </span>
+                            </div>
+                            <div class="span-s">
+                                <span class="info-box-text" style="color: #605ca8">维护清洁</span>
+                                <span class="info-box-number" id="losspct_4" style="color: #605ca8"></span>
+                                <span class="progress-description">
+                                    损失时间
+                                    <span id="lossmin_4">1.2</span>分钟
+                                </span>
+                            </div>
+                            <div class="span-s">
+                                <span class="info-box-text" style="color: #dd4b39">质量损失</span>
+                                <span class="info-box-number" id="losspct_5" style="color: #dd4b39"></span>
+                                <span class="progress-description">
+                                    损失时间
+                                    <span id="lossmin_5">0.2</span>分钟
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //页面效果
+        //页面跳转
+        $('.menu').click(function () {
+            $('.a ul').css('display', 'block');
+        });
+        var pages = ['/Home/SystemConfiguration']
+        $('.img').click(function () {
+            var pageNum = $(this).index();
+            if (pageNum == 0) {
+                $('.right').css({ 'background': 'url("../../img/systemConfiguration.png")', 'background-size': '100% 100%', 'margin-left': '-1%', 'margin-top': '-1.5%' });
+            }
+            $(this).addClass('active').siblings().removeClass('active');
+            $('.right').load(pages[pageNum]);
+        });
+        //语言切换
+        $('#change').click(function () {
+            $('.eng').css('display', 'block');
+            $('.chi').css('display', 'none');
+            $('.a ul').css('display', 'none')
+        })
+        //分辨率自适应
+        window.onresize = function () {
+            console.log(' containHeight=' + $('.right-l').height());
+            console.log(' imgHeight=' + Math.min($('.right-l').width(), 190) / 2.609);
+            $('.r-img').css({
+                "margin-top": (($('.right-l').height() - 20) / 6 - Math.min($('.right-l').width() * 0.8, 190) / 2.609)
+            });
+            $('.info-box-text,.info-box-number').css({
+                "display": $('.right-r').height() > 800 ? 'block' : 'inline'
+            });
+            $('.span-s').css({
+                "line-height": $('.right-r').height() > 700 ? '1.42857143' : '1.1'
+            });
+            $('.colImg').css({
+                "height": $('.colText').height()
+            });
+            if (yieldchart)
+            yieldchart.resize();
+        }
+        //产量折线图
+        var yieldchart = null;
+        var yieldoption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow',
+                    label: {
+                    }
+                },
+                formatter: function (params, ticket, callback) {
+                    for (var i = 0; i < YieldDetail.length; i++) {
+                        if (YieldDetail[i].Time == params[0].axisValue) {
+                            return YieldDetail[i].SortInfo;
+                        }
+                    }
+                    return params[0].data;
+                }
+            },
+            grid: {
+                left: '60px',
+                right: '4%',
+                bottom: '80px',
+                top: '20px'
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 40
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: 'white',
+                            width: '2'
+                        }
+                    },
+                    data: []
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: 'white',
+                            width: '2'
+                        }
+                    },
+                }
+            ],
+            series: [
+                {
+                    name: '产量',
+                    type: 'line',
+                    stack: '产量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(242,153,27,255)'
+                        }
+                    },
+                    smooth: true,
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgba(188,127,33,255)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(184,181,170,255)'
+                            }])
+                        }
+                    },
+                    data: []
+                }
+            ]
+        };
+        //OEE饼图
+        var pieChart = null;
+        var pieoption = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'right',
+                selectedMode: false,
+                textStyle: {
+                    fontSize: 15,
+                    color: '#fff'
+                },
+                data: ['OEE', '设备故障', '换型损失', '组织损失', '维护清洁', '质量损失']
+            },
+            series: [
+                {
+                    name: 'OEE',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    center: ['50%', '50%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'left'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    color: ['#00c0ef', '#d2d6de', '#3D9970', '#f39c12', '#605ca8', '#dd4b39'],
+                    data: [
+                        { value: 0, name: 'OEE' },
+                        { value: 0, name: '设备故障' },
+                        { value: 0, name: '换型损失' },
+                        { value: 0, name: '组织损失' },
+                        { value: 0, name: '维护清洁' },
+                        { value: 0, name: '质量损失' }
+                    ]
+                }
+            ]
+        };
+    </script>
+    <script>
+        //业务逻辑
+        var showtype = 0;
+        $(document).ready(function () {
+            yieldchart = echarts.init(document.getElementById('salesChart'));
+            pieChart = echarts.init(document.getElementById('pieChart'));
+            loadcurrentoee();
+            loadyield();
+            setInterval(loadyield, 30000);
+            loadSchedule();
+        });
+        var widthType = 1;
+        var needUpdate = 1;
+        function showtypeChange(gid) {
+            needUpdate = 1;
+            $('#group' + showtype).removeClass('selectedbtn');
+            $('#group' + showtype).addClass('unselectedbtn');
+            showtype = gid;
+            $('#group' + gid).removeClass('unselectedbtn');
+            $('#group' + gid).addClass('selectedbtn');
+            loadyield();
+            loadcurrentoee();
+        }
+        //计划图
+        function loadSchedule() {
+            var onsuccess = function (rst) {
+                var rstDOM = '';
+                for (var i = 0; i < 8; i++) {
+                    if (rst.length > i) {
+                        rstDOM += '<tr>';
+                        rstDOM += '<td>' + rst[i].SortNr + '</td>';
+                        rstDOM += '<td>' + rst[i].Model + '</td>';
+                        rstDOM += '<td>' + rst[i].Count + '</td>';
+                        rstDOM += '<td>' + rst[i].DoneCount + '</td>';
+                        if (rst[i].State == 1)
+                            rstDOM += '<td><span class="label label-info">等待生产</span></td>'
+                        else if (rst[i].State == 2) {
+                            document.getElementById('model_cuurent').innerHTML = rst[i].Model ;
+                            rstDOM += '<td><span class="label label-success">正在生产</span></td>';
+                        }
+                        else if (rst[i].State == 3)
+                            rstDOM += '<td><span class="label label-warning">&nbsp;&nbsp;&nbsp;暂停&nbsp;&nbsp;&nbsp;</span></td>';
+                        else
+                            rstDOM += rst[i].State;
+                        rstDOM += '<td>' + rst[i].ScheduleStart + '</td>';
+                        rstDOM += '</tr>'
+                    }
+                }
+                document.getElementById('schedule').innerHTML = rstDOM;
+                window.onresize();
+            }
+            onsuccess([
+                {
+                    "ID": 5381,
+                    "ModifyTime": "2019-03-08T13:33:19.017",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-14T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 287,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 376,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 2,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 15:24:42",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 1,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                },
+                {
+                    "ID": 5382,
+                    "ModifyTime": "2019-03-08T13:33:19.043",
+                    "SortNr": "01520",
+                    "ScheduleDate": "2019-03-15T00:00:00",
+                    "ScheduleSeq": 1,
+                    "Count": 355,
+                    "DoneCount": 0,
+                    "CurEngine_Nr": "DMB BA7433",
+                    "ScheduleNr": 377,
+                    "OperateType": "Normal",
+                    "ScheduleType": "1",
+                    "State": 3,
+                    "Series": "DMB",
+                    "PartCode": null,
+                    "IsMotorLabel": "Y",
+                    "ScheduleStart": "2019-03-14 16:10:02",
+                    "Model": "New Lavida"
+                }
+            ]);
+            //AJAX('/Schedule/GetTop10', {}, onsuccess, null);
+        }
+        //产量图
+
+        var showyield = function (rst) {
+            yieldoption.xAxis[0].data = [];
+            yieldoption.series[0].data = [];
+            YieldDetail = [];
+            for (var i = rst.length - 1; i >= 0; i--) {
+                //if ((showtype == 0 && (rst.length - i) <= 24) || ((rst.length - i) <= 9))
+                {
+                    yieldoption.xAxis[0].data.unshift(new Date(rst[i].Date).Format('MM-dd') + ' ' + rst[i].Hour + ':00');
+                    YieldDetail.push({ Time: new Date(rst[i].Date).Format('MM-dd') + ' ' + rst[i].Hour + ':00', SortInfo: rst[i].SortInfo })
+                    yieldoption.series[0].data.unshift(rst[i].Count);
+                }
+            }
+            if (yieldchart)
+                yieldchart.setOption(yieldoption);
+        }
+        var needUpdate = 1;
+        function loadyield() {
+            if (needUpdate > 0)
+                showyield([
+                    {
+                        "ID": 221,
+                        "Date": "2019-03-13T00:00:00",
+                        "Hour": 16,
+                        "Count": 56,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 56"
+                    },
+                    {
+                        "ID": 222,
+                        "Date": "2019-03-13T00:00:00",
+                        "Hour": 17,
+                        "Count": 30,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 30"
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 18,
+                        "Count": 35,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 19,
+                        "Count": 43,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 20,
+                        "Count": 23,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 21,
+                        "Count": 17,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 22,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-13T00:00:00+08:00",
+                        "Hour": 23,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 0,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 1,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 2,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 3,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 4,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 5,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 6,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 7,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 0,
+                        "Date": "2019-03-14T00:00:00+08:00",
+                        "Hour": 8,
+                        "Count": 0,
+                        "SortNr": null,
+                        "SortInfo": null
+                    },
+                    {
+                        "ID": 223,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 9,
+                        "Count": 18,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 18"
+                    },
+                    {
+                        "ID": 224,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 10,
+                        "Count": 53,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 53"
+                    },
+                    {
+                        "ID": 225,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 11,
+                        "Count": 44,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 44"
+                    },
+                    {
+                        "ID": 226,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 12,
+                        "Count": 32,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 32"
+                    },
+                    {
+                        "ID": 227,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 13,
+                        "Count": 57,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 57"
+                    },
+                    {
+                        "ID": 228,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 14,
+                        "Count": 46,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 46"
+                    },
+                    {
+                        "ID": 229,
+                        "Date": "2019-03-14T00:00:00",
+                        "Hour": 15,
+                        "Count": 55,
+                        "SortNr": "01520",
+                        "SortInfo": "01520 : 55"
+                    }
+                ])
+            //AJAX('/OEE/GetYield', { ShowType: showtype }, showyield, null);
+        }
+        //OEE
+        var oeeday = null;
+        var oeeshift = 0;
+        var starttime = null;
+        var scheduletime = null;
+        var usefultime = 0;
+        var shiftyield = 0;
+        var oee = 0;
+        var shiftName = ['', '早班', '中班', '夜班'];
+        var className = ['', 'A班', 'B班', 'C班'];
+
+        function setChart(rst) {
+            //设置饼图
+            pieoption.series[0].data[0].value = (rst[0] / 60).toFixed(2);
+            pieoption.series[0].data[1].value = (rst[1] / 60).toFixed(2);
+            pieoption.series[0].data[2].value = (rst[2] / 60).toFixed(2);
+            pieoption.series[0].data[3].value = (rst[3] / 60).toFixed(2);
+            pieoption.series[0].data[4].value = (rst[4] / 60).toFixed(2);
+            pieoption.series[0].data[5].value = (rst[5] / 60).toFixed(2);
+            pieChart.setOption(pieoption);
+            //设置详情列表
+            var sum = 0;
+            for (var i = 0; i < rst.length; i++) {
+                sum += parseFloat(rst[i]);
+            }
+            document.getElementById('oee_current').innerHTML = sum == 0 ? '0' : ((rst[0] * 100 / sum).toFixed(2)) + '%';
+            for (var i = 1; i < rst.length; i++) {
+                document.getElementById('losspct_' + i).innerHTML = sum == 0 ? '0' : ((rst[i] * 100 / sum).toFixed(2)) + '%';
+                document.getElementById('lossmin_' + i).innerHTML = (rst[i] / 60).toFixed(2);
+            }
+        };
+        function loadcurrentoee() {
+            var onsuccess = function (rst) {
+                oeeday = rst[0].Date.split('T')[0];
+                oeeshift = rst[0].Shift;
+                scheduletime = rst[0].ScheduleTime;
+                //document.getElementById('showShift').innerHTML = oeeday + ' ' + shiftName[oeeshift];//漏了
+                document.getElementById('curWorkshift').innerHTML = shiftName[rst[0].Shift];
+                document.getElementById('opclass').innerHTML = className[rst[0].OPClass];
+                document.getElementById('yield_current').innerHTML = rst[0].Yield;
+                document.getElementById('planYield').innerHTML = rst[0].PlanYield;
+                loadLoss(oeeday, oeeshift);
+                window.onresize();
+
+            }
+            onsuccess([{
+                "ID": 474,
+                "Date": "2019-03-14T00:00:00",
+                "Shift": 1,
+                "OPClass": "1",
+                "TimeFrom": "2019-03-14T08:30:00",
+                "TimeTo": "2019-03-14T16:40:00",
+                "ScheduleTime": 460,
+                "UsefulTime": 22610.0,
+                "ActualUseTime": 23146.0,
+                "Yield": 323,
+                "UnknowLoss": -4001,
+                "PlanYield": 395,
+                "Complete": false
+            }])
+            //AJAX('/OEE/GetOEEPeriodLast', { ShowType: showtype }, onsuccess, null);
+        }
+        function loadLoss(workdate, workshift) {
+            var formdata = {
+                Date: workdate,
+                WorkShift: workshift
+            }
+            var onsuccess = function (rst) {
+                setChart([rst.Period.UsefulTime, rst.LossItem[0], rst.LossItem[1], rst.LossItem[2], rst.LossItem[3], rst.LossItem[4]]);
+
+                window.onresize();
+            }
+            onsuccess({
+                "Period": {
+                    "ID": 517,
+                    "Date": "2019-04-03T00:00:00",
+                    "Shift": 1,
+                    "OPClass": "1",
+                    "TimeFrom": "2019-04-03T08:30:00",
+                    "TimeTo": "2019-04-03T16:40:00",
+                    "ScheduleTime": 460,
+                    "UsefulTime": 0.0,
+                    "ActualUseTime": 27600.0,
+                    "Yield": 0,
+                    "UnknowLoss": 27600,
+                    "PlanYield": 0,
+                    "Complete": true
+                },
+                "Yield": [],
+                "LossItem": [0.0, 0.0, 0.0, 0.0, 0.0],
+                "Loss1": [
+                    {
+                        "ID": 0,
+                        "WorkDay": "0001-01-01T00:00:00",
+                        "WorkShift": 0,
+                        "PeriodID": 0,
+                        "WorkSlot": 0,
+                        "Station": null,
+                        "LossType": 1,
+                        "Text": "总和",
+                        "SortNr": "总和",
+                        "AlarmCode": null,
+                        "Count": 0,
+                        "TimeFrom": "0001-01-01T00:00:00",
+                        "Duration": 0.0,
+                        "Influence": 0.0,
+                        "OEEUse": false,
+                        "KPSUse": false,
+                        "TimeTo": "0001-01-01T00:00:00",
+                        "IssueID": 0
+                    }
+                ],
+                "Loss2": [
+                    {
+                        "ID": 0,
+                        "WorkDay": "0001-01-01T00:00:00",
+                        "WorkShift": 0,
+                        "PeriodID": 0,
+                        "WorkSlot": 0,
+                        "Station": null,
+                        "LossType": 2,
+                        "Text": "总和",
+                        "SortNr": "总和",
+                        "AlarmCode": null,
+                        "Count": 0,
+                        "TimeFrom": "0001-01-01T00:00:00",
+                        "Duration": 0.0,
+                        "Influence": 0.0,
+                        "OEEUse": false,
+                        "KPSUse": false,
+                        "TimeTo": "0001-01-01T00:00:00",
+                        "IssueID": 0
+                    }
+                ],
+                "Loss3": [
+                    {
+                        "ID": 0,
+                        "WorkDay": "0001-01-01T00:00:00",
+                        "WorkShift": 0,
+                        "PeriodID": 0,
+                        "WorkSlot": 0,
+                        "Station": null,
+                        "LossType": 3,
+                        "Text": "总和",
+                        "SortNr": "总和",
+                        "AlarmCode": null,
+                        "Count": 0,
+                        "TimeFrom": "0001-01-01T00:00:00",
+                        "Duration": 0.0,
+                        "Influence": 0.0,
+                        "OEEUse": false,
+                        "KPSUse": false,
+                        "TimeTo": "0001-01-01T00:00:00",
+                        "IssueID": 0
+                    }
+                ],
+                "Loss4": [
+                    {
+                        "ID": 0,
+                        "WorkDay": "0001-01-01T00:00:00",
+                        "WorkShift": 0,
+                        "PeriodID": 0,
+                        "WorkSlot": 0,
+                        "Station": null,
+                        "LossType": 4,
+                        "Text": "总和",
+                        "SortNr": "总和",
+                        "AlarmCode": null,
+                        "Count": 0,
+                        "TimeFrom": "0001-01-01T00:00:00",
+                        "Duration": 0.0,
+                        "Influence": 0.0,
+                        "OEEUse": false,
+                        "KPSUse": false,
+                        "TimeTo": "0001-01-01T00:00:00",
+                        "IssueID": 0
+                    }
+                ],
+                "Loss5": [
+                    {
+                        "ID": 0,
+                        "WorkDay": "0001-01-01T00:00:00",
+                        "WorkShift": 0,
+                        "PeriodID": 0,
+                        "WorkSlot": 0,
+                        "Station": null,
+                        "LossType": 5,
+                        "Text": "总和",
+                        "SortNr": "总和",
+                        "AlarmCode": null,
+                        "Count": 0,
+                        "TimeFrom": "0001-01-01T00:00:00",
+                        "Duration": 0.0,
+                        "Influence": 0.0,
+                        "OEEUse": false,
+                        "KPSUse": false,
+                        "TimeTo": "0001-01-01T00:00:00",
+                        "IssueID": 0
+                    }
+                ]
+            });
+            // AJAX('/OEE/ReadOEEInfo', formdata, onsuccess, null);
+        }
+    </script>
+</body>
+</html>
