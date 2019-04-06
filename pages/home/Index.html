@@ -252,6 +252,15 @@
         .right-m{
             padding-top:5%;
         }
+        .lossmark{
+            display: inline-block;
+            line-height: 10px;
+            height: 12px;
+            width:12px;
+            border-radius: 6px;
+            padding-top: -8px;
+            
+        }
     </style>
 </head>
 <body>
@@ -455,9 +464,21 @@
                 <div class="right-r" style="width: 24%;height: 100%">
                     <div class="right-r-t" style="margin-top: 25%">
                         <div>
-                            <div id="chartParent" class="chart-responsive">
-                                <div id="pieChart" style="width:400px;height:220px;"></div>
+                            <div id="chartParent">
+                                <canvas id="pieChart" width="200" height="150"></canvas>
                             </div>
+                            <table style="width:80%;margin-left:10%;color: white;font-size: 12px;">
+                                <tr>
+                                    <td><span class="lossmark" style="background-color: #00c0ef;">&nbsp;</span><span>&nbsp;OEE</span></td>
+                                    <td><span class="lossmark" style="background-color: #d2d6de;">&nbsp;</span><span>&nbsp;设备故障</span></td>
+                                    <td><span class="lossmark" style="background-color: #3D9970;">&nbsp;</span><span>&nbsp;换型损失</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lossmark" style="background-color: #f39c12;">&nbsp;</span><span>&nbsp;组织损失</span></td>
+                                    <td><span class="lossmark" style="background-color: #605ca8;">&nbsp;</span><span>&nbsp;维护清洁</span></td>
+                                    <td><span class="lossmark" style="background-color: #dd4b39;">&nbsp;</span><span>&nbsp;质量损失</span></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="right-r-m">
@@ -537,10 +558,12 @@
         })
         //分辨率自适应
         window.onresize = function () {
-            console.log(' containHeight=' + $('.right-l').height());
-            console.log(' imgHeight=' + Math.min($('.right-l').width(), 190) / 2.609);
             $('.r-img').css({
                 "margin-top": (($('.right-l').height() - 20) / 6 - Math.min($('.right-l').width() * 0.8, 190) / 2.609)
+            }); 
+            $('#chartParent').css({
+                "padding-top": '15px',
+                "padding-left":$('.right-r').width() /2-100
             });
             $('.info-box-text,.info-box-number').css({
                 "display": $('.right-r').height() > 800 ? 'block' : 'inline'
@@ -642,59 +665,85 @@
             ]
         };
         //OEE饼图
-        var pieChart = null;
         var pieoption = {
-            tooltip: {
-                trigger: 'item',
-                formatter: "{b}: {c} ({d}%)"
+            "r":70,
+            "r0":35,
+            "offset":{
+                "angle":250,
+                "length":16.6
             },
-            legend: {
-                orient: 'vertical',
-                x: 'right',
-                selectedMode: false,
-                textStyle: {
-                    fontSize: 15,
-                    color: '#fff'
-                },
-                data: ['OEE', '设备故障', '换型损失', '组织损失', '维护清洁', '质量损失']
-            },
-            series: [
-                {
-                    name: 'OEE',
-                    type: 'pie',
-                    radius: ['40%', '70%'],
-                    center: ['50%', '50%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                        normal: {
-                            show: false,
-                            position: 'left'
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: false
-                        }
-                    },
-                    color: ['#00c0ef', '#d2d6de', '#3D9970', '#f39c12', '#605ca8', '#dd4b39'],
-                    data: [
-                        { value: 0, name: 'OEE' },
-                        { value: 0, name: '设备故障' },
-                        { value: 0, name: '换型损失' },
-                        { value: 0, name: '组织损失' },
-                        { value: 0, name: '维护清洁' },
-                        { value: 0, name: '质量损失' }
-                    ]
-                }
-            ]
+            "data":[60,60,60,60,60,60],
+            "color":['#00c0ef', '#d2d6de', '#3D9970', '#f39c12', '#605ca8', '#dd4b39'],
+            "shadowColor":['#016790', '#B2B6Be', '#1D7950', '#D37c02', '#403c88', '#Bd2b19']
         };
+        function drawPie(dom,option){
+        dom.width=dom.width;
+        var ctx=dom.getContext("2d");
+        var sum=0;
+        option.data.forEach(function(v){sum+=parseFloat(v)},0);
+        var splits=[];
+        var sumIdx=0;
+        for(var i=0;i<option.data.length;i++) {
+            sumIdx+=360*parseFloat( option.data[i])/sum;
+            splits.push(sumIdx);
+        }
+            console.log(splits);
+        var offset_x=option.offset.length*Math.cos(option.offset.angle*Math.PI/180-Math.PI/2);
+        var offset_y=option.offset.length*Math.sin(option.offset.angle*Math.PI/180-Math.PI/2);
+        var circle_x=option.r+Math.max(-offset_x,0)+5;
+        var circle_y=option.r+Math.max(-offset_y,0)+5;
+        //绘制内圆柱阴影
+         for(var i=0;i<splits.length;i++)
+        {
+            var startAngle=i>0?splits[i-1]:0;
+            var endAngle=splits[i];
+            if(startAngle<endAngle){
+                ctx.beginPath();
+                ctx.moveTo(circle_x+option.r0*Math.cos(endAngle*Math.PI/180-Math.PI/2),circle_y+option.r0*Math.sin(endAngle*Math.PI/180-Math.PI/2));
+                ctx.lineTo(circle_x+option.r0*Math.cos(endAngle*Math.PI/180-Math.PI/2)+offset_x,circle_y+option.r0*Math.sin(endAngle*Math.PI/180-Math.PI/2)+offset_y);
+                ctx.arc(circle_x+offset_x,circle_y+offset_y,option.r0,endAngle*Math.PI/180-Math.PI/2,startAngle*Math.PI/180-Math.PI/2,true);
+                ctx.lineTo(circle_x+option.r0*Math.cos(startAngle*Math.PI/180-Math.PI/2),circle_y+option.r0*Math.sin(startAngle*Math.PI/180-Math.PI/2));
+                ctx.arc(circle_x,circle_y,option.r0,startAngle*Math.PI/180-Math.PI/2,endAngle*Math.PI/180-Math.PI/2,false);
+                ctx.fillStyle=option.shadowColor[i%option.color.length];
+                ctx.fill();
+            }
+        }
+        //绘制外圆柱阴影
+        for(var i=0;i<splits.length;i++){
+            var startAngle=i>0?splits[i-1]:0;
+            var endAngle=splits[i];
+                ctx.beginPath();
+                ctx.moveTo(circle_x+option.r*Math.cos(endAngle*Math.PI/180-Math.PI/2),circle_y+option.r*Math.sin(endAngle*Math.PI/180-Math.PI/2));
+                ctx.lineTo(circle_x+option.r*Math.cos(endAngle*Math.PI/180-Math.PI/2)+offset_x,circle_y+option.r*Math.sin(endAngle*Math.PI/180-Math.PI/2)+offset_y);
+                ctx.arc(circle_x+offset_x,circle_y+offset_y,option.r,endAngle*Math.PI/180-Math.PI/2,startAngle*Math.PI/180-Math.PI/2,true);
+                ctx.lineTo(circle_x+option.r*Math.cos(startAngle*Math.PI/180-Math.PI/2),circle_y+option.r*Math.sin(startAngle*Math.PI/180-Math.PI/2));
+                ctx.arc(circle_x,circle_y,option.r,startAngle*Math.PI/180-Math.PI/2,endAngle*Math.PI/180-Math.PI/2,false);
+                ctx.fillStyle=option.shadowColor[i%option.color.length];
+                ctx.fill();
+        }
+        //绘制圆
+       for(var i=0;i<splits.length;i++){
+            var startAngle=i>0?splits[i-1]:0;
+            var endAngle=splits[i];
+            ctx.beginPath();
+            ctx.moveTo(circle_x+option.r0*Math.cos(endAngle*Math.PI/180-Math.PI/2),circle_y+option.r0*Math.sin(endAngle*Math.PI/180-Math.PI/2));
+            ctx.lineTo(circle_x+option.r*Math.cos(endAngle*Math.PI/180-Math.PI/2),circle_y+option.r*Math.sin(endAngle*Math.PI/180-Math.PI/2));
+           ctx.arc(circle_x,circle_y,option.r,endAngle*Math.PI/180-Math.PI/2,startAngle*Math.PI/180-Math.PI/2,true);
+            ctx.lineTo(circle_x+option.r0*Math.cos(startAngle*Math.PI/180-Math.PI/2),circle_y+option.r0*Math.sin(startAngle*Math.PI/180-Math.PI/2));
+            ctx.arc(circle_x,circle_y,option.r0,startAngle*Math.PI/180-Math.PI/2,endAngle*Math.PI/180-Math.PI/2,false);
+            ctx.fillStyle=option.color[i%option.color.length];
+            ctx.strokeStyle=option.color[i%option.color.length];
+            ctx.stroke();
+            ctx.fill();
+        }
+    }
     </script>
     <script>
         //业务逻辑
         var showtype = 0;
         $(document).ready(function () {
             yieldchart = echarts.init(document.getElementById('salesChart'));
-            pieChart = echarts.init(document.getElementById('pieChart'));
+            drawPie(document.getElementById('pieChart'),pieoption);
             loadcurrentoee();
             loadyield();
             setInterval(loadyield, 30000);
@@ -1125,13 +1174,13 @@
 
         function setChart(rst) {
             //设置饼图
-            pieoption.series[0].data[0].value = (rst[0] / 60).toFixed(2);
-            pieoption.series[0].data[1].value = (rst[1] / 60).toFixed(2);
-            pieoption.series[0].data[2].value = (rst[2] / 60).toFixed(2);
-            pieoption.series[0].data[3].value = (rst[3] / 60).toFixed(2);
-            pieoption.series[0].data[4].value = (rst[4] / 60).toFixed(2);
-            pieoption.series[0].data[5].value = (rst[5] / 60).toFixed(2);
-            pieChart.setOption(pieoption);
+            pieoption.data[0] = (rst[0] / 60).toFixed(2);
+            pieoption.data[1]  = (rst[1] / 60).toFixed(2);
+            pieoption.data[2]  = (rst[2] / 60).toFixed(2);
+            pieoption.data[3]  = (rst[3] / 60).toFixed(2);
+            pieoption.data[4]  = (rst[4] / 60).toFixed(2);
+            pieoption.data[5]  = (rst[5] / 60).toFixed(2);
+            drawPie(document.getElementById('pieChart'),pieoption);
             //设置详情列表
             var sum = 0;
             for (var i = 0; i < rst.length; i++) {
@@ -1193,7 +1242,7 @@
                     "TimeFrom": "2019-04-03T08:30:00",
                     "TimeTo": "2019-04-03T16:40:00",
                     "ScheduleTime": 460,
-                    "UsefulTime": 0.0,
+                    "UsefulTime": 22610.0,
                     "ActualUseTime": 27600.0,
                     "Yield": 0,
                     "UnknowLoss": 27600,
@@ -1201,7 +1250,7 @@
                     "Complete": true
                 },
                 "Yield": [],
-                "LossItem": [0.0, 0.0, 0.0, 0.0, 0.0],
+                "LossItem": [3000.0, 240.0, 16.0, 120.0, 210.0],
                 "Loss1": [
                     {
                         "ID": 0,
